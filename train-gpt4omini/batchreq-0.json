@@ -1,0 +1,28 @@
+{
+    "id": "batch_67e0020547e4819097d8c1b258765cc5",
+    "completion_window": "24h",
+    "created_at": 1742733829,
+    "endpoint": "/v1/chat/completions",
+    "input_file_id": "file-DrNhqZxpzwFzZSiKpDYViG",
+    "object": "batch",
+    "status": "validating",
+    "cancelled_at": null,
+    "cancelling_at": null,
+    "completed_at": null,
+    "error_file_id": null,
+    "errors": null,
+    "expired_at": null,
+    "expires_at": 1742820229,
+    "failed_at": null,
+    "finalizing_at": null,
+    "in_progress_at": null,
+    "metadata": {
+        "description": "Batch request 0 for stock prediction explanations."
+    },
+    "output_file_id": null,
+    "request_counts": {
+        "completed": 0,
+        "failed": 0,
+        "total": 0
+    }
+}

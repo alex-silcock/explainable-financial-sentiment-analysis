@@ -1,0 +1,134 @@
+steps:
+  ### TRAINING ###
+  - name: Mistral 7B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "prompt_llm.py"
+      - "--sys_prompt_path"
+      - "./new/sys_prompt.txt"
+      - "--output_dir"
+      - "./new/train-mistral7b/"
+      - "--prompt_dir"
+      - "./new/train-mistral7b/"
+
+  # - name: Mistral 7B with input - this doesnt needed to be done as input is fine tuned on and only done during inference with BERT
+
+  - name: Mistral 7B with sentiment
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "prompt_llm.py"
+      - "--sys_prompt_path"
+      - "./new/sys_prompt.txt"
+      - "--output_dir"
+      - "./new/train-mistral7b-sentiment/"
+      - "--prompt_dir"
+      - "./new/train-mistral7b-sentiment/"
+
+  - name: Mistral 7B fine tuned
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "prompt_llm.py"
+      - "--sys_prompt_path"
+      - "./new/sys_prompt.txt"
+      - "--output_dir"
+      - "./new/train-mistral7b-finetuned/"
+      - "--prompt_dir"
+      - "./new/train-mistral7b-finetuned/"
+      - "--use_mistral_ft"
+      - "true"
+
+  - name: GPT4o-mini
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "utils/build_openai_batches.py"
+      - "--sys_prompt_path"
+      - "./new/sys_prompt.txt"
+      - "--output_dir"
+      - "./new/train-gpt4omini/"
+      - "--prompt_dir"
+      - "./new/train-gpt4omini/"
+
+  # - name: GPT4o-mini with input - this doesnt needed to be done as input is fine tuned on and only done during inference with BERT
+
+  ### TESTING ###
+  # - name: Mistral 7B
+  #   docker_image: as4387/pt-plus-libs
+  #   environment:
+  #     HF_HOME: /app/.cache
+  #     HF_TOKEN: "$TOKEN"
+  #     MPLCONFIGDIR: /app/.config/matplotlib
+  #   command: python3
+  #   args:
+  #     - "./new/build_prompts.py"
+  #     - "-o"
+  #     - "./new/test-mistral7b/"
+  #     - "-n"
+  #     - "1000"
+
+  # # - name: Mistral 7B with input - this doesnt needed to be done as input is fine tuned on and only done during inference with BERT
+
+  # - name: Mistral 7B with sentiment
+  #   docker_image: as4387/pt-plus-libs
+  #   environment:
+  #     HF_HOME: /app/.cache
+  #     HF_TOKEN: "$TOKEN"
+  #     MPLCONFIGDIR: /app/.config/matplotlib
+  #   command: python3
+  #   args:
+  #     - "./new/build_prompts.py"
+  #     - "-o"
+  #     - "./new/test-mistral7b-sentiment/"
+  #     - "-n"
+  #     - "1000"
+  #     - "-s"
+  #     - "true"
+
+  # - name: Mistral 7B fine tuned
+  #   docker_image: as4387/pt-plus-libs
+  #   environment:
+  #     HF_HOME: /app/.cache
+  #     HF_TOKEN: "$TOKEN"
+  #     MPLCONFIGDIR: /app/.config/matplotlib
+  #   command: python3
+  #   args:
+  #     - "./new/build_prompts.py"
+  #     - "-o"
+  #     - "./new/test-mistral7b-finetuned/"
+  #     - "-n"
+  #     - "1000"
+
+  # - name: GPT4o-mini
+  #   docker_image: as4387/pt-plus-libs
+  #   environment:
+  #     HF_HOME: /app/.cache
+  #     HF_TOKEN: "$TOKEN"
+  #     MPLCONFIGDIR: /app/.config/matplotlib
+  #   command: python3
+  #   args:
+  #     - "./new/build_prompts.py"
+  #     - "-o"
+  #     - "./new/test-gpt4omini/"
+  #     - "-n"
+  #     - "1000"
+  #     - "-s"
+  #     - "true"

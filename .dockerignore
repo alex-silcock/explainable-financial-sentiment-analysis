@@ -1,0 +1,9 @@
+models
+.cache
+__pycache__
+.*
+results
+
+stocknet-dataset
+.datasets
+.nltk_data

@@ -1,0 +1,144 @@
+steps:
+  - name: Mistral 7B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_mistral7b_finetune"
+      - "-m"
+      - "./models/bert-mistral7b-finetune"
+      - "-o"
+      - "./outputs/other/bert-mistral7b-finetune.txt"
+
+  - name: Mistral 7B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_mistral7b_finetune_with_input"
+      - "-m"
+      - "./models/bert_mistral7b_finetune_with_input"
+      - "-o"
+      - "./outputs/other/bert-mistral7b-finetune-with-input.txt"
+
+  - name: Mistral 7B with sentiment
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_mistral7b_finetune_with_sentiment"
+      - "-m"
+      - "./models/bert_mistral7b_finetune_with_sentiment"
+      - "-o"
+      - "./outputs/other/bert-mistral7b-finetune-with-sentiment.txt"
+
+  - name: Mistral 7B fine tuned
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_mistral7b_finetune_lora_finetuned"
+      - "-m"
+      - "./models/bert_mistral7b_finetune_lora_finetuned"
+      - "-o"
+      - "./outputs/other/bert-mistral7b-finetune-lora-finetuned.txt"
+
+  - name: GPT4o-mini
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_gpt4omini_finetune"
+      - "-m"
+      - "./models/bert_gpt4omini_finetune"
+      - "-o"
+      - "./outputs/other/bert-gpt4omini-finetune.txt"
+
+  - name: DeepSeek R1 Distill Llama 8B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_deepseekr1_distill_llama8b_recom_finetune"
+      - "-m"
+      - "./models/bert-deepseekr1-distill-llama8b-recom-finetune"
+      - "-o"
+      - "./outputs/other/bert-deepseekr1-distill-llama8b-recom-finetune.txt"
+
+  - name: DeepSeek R1 Distill Llama 8B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_deepseekr1_distill_llama8b_recom_finetune_with_input"
+      - "-m"
+      - "./models/bert-deepseekr1-distill-llama8b-recom-finetune-with-input"
+      - "-o"
+      - "./outputs/other/bert-deepseekr1-distill-llama8b-recom-finetune-with-input.txt"
+
+  - name: DeepSeek R1 Distill Qwen 32B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_deepseekr1_distill_qwen32b_recom_finetune"
+      - "-m"
+      - "./models/bert-deepseekr1-distill-qwen32b-recom-finetune"
+      - "-o"
+      - "./outputs/other/bert-deepseekr1-distill-qwen32b-recom-finetune.txt"
+
+  - name: DeepSeek R1 Distill Qwen 32B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/fine_tune.py"
+      - "-d"
+      - "./.datasets/.bert_deepseekr1_distill_qwen32b_recom_finetune_with_input"
+      - "-m"
+      - "./models/bert-deepseekr1-distill-qwen32b-recom-finetune-with-input"
+      - "-o"
+      - "./outputs/other/bert-deepseekr1-distill-qwen32b-recom-finetune-with-input.txt"

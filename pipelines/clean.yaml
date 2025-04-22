@@ -1,0 +1,263 @@
+steps:
+  ### TRAINING ###
+  - name: Mistral 7B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/train-mistral7b/responses.json"
+      - "-t"
+      - "true"
+
+  - name: Mistral 7B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/train-mistral7b/responses.json"
+      - "-i"
+      - "true"
+      - "-t"
+      - "true"
+
+  - name: Mistral 7B with sentiment
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/train-mistral7b-sentiment/responses.json"
+      - "-t"
+      - "true"
+
+  - name: Mistral 7B fine tuned
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/train-mistral7b-finetuned/responses.json"
+      - "-t"
+      - "true"
+
+  - name: GPT4o-mini
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_openai.py"
+      - "-r"
+      - "./new/train-gpt4omini/"
+
+  - name: DeepSeek R1 Distill Llama 8B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_deepseek.py"
+      - "-r"
+      - "./new/train-deepseekr1-distill-llama8b-recom/responses.json"
+      - "-t"
+      - "true"
+
+  - name: DeepSeek R1 Distill Llama 8B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_deepseek.py"
+      - "-r"
+      - "./new/train-deepseekr1-distill-llama8b-recom/responses.json"
+      - "-t"
+      - "true"
+      - "-i"
+      - "true"
+
+  - name: DeepSeek R1 Distill Qwen 32B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_deepseek.py"
+      - "-r"
+      - "./new/train-deepseekr1-distill-qwen32b-recom/responses.json"
+      - "-t"
+      - "true"
+
+
+  - name: DeepSeek R1 Distill Qwen 32B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_deepseek.py"
+      - "-r"
+      - "./new/train-deepseekr1-distill-qwen32b-recom/responses.json"
+      - "-t"
+      - "true"
+      - "-i"
+      - "true"
+
+  # # - name: GPT4o-mini with input - this doesnt needed to be done as input is fine tuned on and only done during inference with BERT
+
+  # ### TESTING ###
+  - name: Mistral 7B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/test-mistral7b/responses.json"
+
+  - name: Mistral 7B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/test-mistral7b/responses.json"
+      - "-i"
+      - "true"
+
+  - name: Mistral 7B with sentiment
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/test-mistral7b-sentiment/responses.json"
+
+  - name: Mistral 7B with sentiment with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/test-mistral7b-sentiment/responses.json"
+      - "-i"
+      - "true"
+
+  - name: Mistral 7B fine tuned
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean.py"
+      - "-r"
+      - "./new/test-mistral7b-finetuned/responses.json"
+
+  - name: GPT4o-mini
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_openai.py"
+      - "-r"
+      - "./new/test-gpt4omini/"
+
+  - name: DeepSeek R1 Distill Llama 8B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_deepseek.py"
+      - "-r"
+      - "./new/test-deepseekr1-distill-llama8b-recom/responses.json"
+
+  - name: DeepSeek R1 Distill Llama 8B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_deepseek.py"
+      - "-r"
+      - "./new/test-deepseekr1-distill-llama8b-recom/responses.json"
+      - "-i"
+      - "true"
+
+  - name: DeepSeek R1 Distill Qwen 32B
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_deepseek.py"
+      - "-r"
+      - "./new/test-deepseekr1-distill-qwen32b-recom/responses.json"
+
+  - name: DeepSeek R1 Distill Qwen 32B with input
+    docker_image: as4387/pt-plus-libs
+    environment:
+      HF_HOME: /app/.cache
+      HF_TOKEN: "$TOKEN"
+      MPLCONFIGDIR: /app/.config/matplotlib
+    command: python3
+    args:
+      - "./new/clean_deepseek.py"
+      - "-r"
+      - "./new/test-deepseekr1-distill-qwen32b-recom/responses.json"
+      - "-i"
+      - "true"

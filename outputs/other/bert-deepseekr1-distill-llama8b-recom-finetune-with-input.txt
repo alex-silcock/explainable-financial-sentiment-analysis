@@ -1,0 +1,6 @@
+Test Set Evaluation Metrics
+==========================
+accuracy: 0.7793
+precision: 0.8068
+recall: 0.7793
+f1: 0.7824

@@ -1,0 +1,26 @@
+# Secrets
+.env
+.token
+
+# Models, logs, and results
+models
+logs
+results
+
+.cache
+*.pyc
+*venv
+__pycache__
+.config
+response_cache.json
+
+# Datasets
+.datasets
+stocknet-dataset
+
+.nltk_data
+
+*.npy
+*.index
+
+*.html

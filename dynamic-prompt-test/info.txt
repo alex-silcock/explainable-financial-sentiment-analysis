@@ -1,0 +1,4 @@
+uses mistral finetuned
+vector store built with similarity 0.7
+
+needs to be evaluated with bert mistral ft
