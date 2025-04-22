@@ -92,8 +92,15 @@ def flag_outliers(metrics_df):
 
 def plot_metrics(metrics_df):
     plt.figure(figsize=(8,6))
-    grouped = metrics_df.groupby("k")["f1"].mean().reset_index()
-    plt.bar(grouped["k"].astype(str), grouped["f1"], color='skyblue')
+    grouped_acc = metrics_df.groupby("k")["accuracy"].mean().reset_index()
+    grouped_prec = metrics_df.groupby("k")["precision"].mean().reset_index()
+    grouped_rec = metrics_df.groupby("k")["recall"].mean().reset_index()
+    grouped_f1 = metrics_df.groupby("k")["f1"].mean().reset_index()
+    print(grouped_acc)
+    print(grouped_prec)
+    print(grouped_rec)
+    print(grouped_f1)
+    plt.bar(grouped_f1["k"].astype(str), grouped_f1["f1"], color='skyblue')
     plt.xlabel("k")
     plt.ylabel("Mean F1")
     plt.title("Mean F1 Score vs k")

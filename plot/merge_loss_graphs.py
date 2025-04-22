@@ -21,7 +21,8 @@ def get_label(file_path):
         "/app/outputs/other/bert-deepseekr1-distill-llama8b-recom-finetune_log.txt": "(f) DeepSeek R1 (Distill LLaMA 8B)",
         "/app/outputs/other/bert-deepseekr1-distill-llama8b-recom-finetune-with-input_log.txt": "(g) DeepSeek R1 (Distill LLaMA 8B) (Input)",
         "/app/outputs/other/bert-deepseekr1-distill-qwen32b-recom-finetune_log.txt": "(h) DeepSeek R1 (Distill Qwen 32B)",
-        "/app/outputs/other/bert-deepseekr1-distill-qwen32b-recom-finetune-with-input_log.txt": "(i) DeepSeek R1 (Distill Qwen 32B) (Input)"
+        "/app/outputs/other/bert-deepseekr1-distill-qwen32b-recom-finetune-with-input_log.txt": "(i) DeepSeek R1 (Distill Qwen 32B) (Input)",
+        "/app/outputs/other/bert-large-uncased-stock-market-tweet-baseline_log.txt": "(j) Baseline - BERT (Input)"
     }
     return label_map.get(file_path)
 
@@ -32,6 +33,9 @@ def main():
     num_images = len(log_files)
     n_cols = math.ceil(math.sqrt(num_images))
     n_rows = math.ceil(num_images / n_cols)
+
+    n_cols = 3
+    n_rows = 4
     
     plt.figure(figsize=(n_cols * 5, n_rows * 4))
     
@@ -50,7 +54,11 @@ def main():
             print(f"Error reading {file_path}: {e}")
             continue
 
-        ax = plt.subplot(n_rows, n_cols, index + 1)
+        i = index + 1
+        if file_path == "/app/outputs/other/bert-large-uncased-stock-market-tweet-baseline_log.txt":
+            i += 1
+            
+        ax = plt.subplot(n_rows, n_cols, i)
         ax.plot(steps, losses, marker='o', linestyle='-')
         ax.set_xlabel("Step", fontsize=10)
         ax.set_ylabel("Loss", fontsize=10)
