@@ -1,14 +1,22 @@
+# Reference:
+#
+# This script has been taken and adapted from:
+# https://medium.com/@harsh.vardhan7695/fine-tuning-llama-2-using-lora-and-qlora-a-comprehensive-guide-fd2260f0aa5f
+#
+# to work for Mistral 7B and our chosen dataset.
+#
+# I thank the author Harsh Vardan for his work.
+
+
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import torch
-from datasets import load_dataset
 from transformers import ( 
     AutoTokenizer, 
     AutoModelForCausalLM,
     BitsAndBytesConfig,
-    HfArgumentParser,
     TrainingArguments,
     pipeline,
     logging,
@@ -36,70 +44,31 @@ bnb_4bit_compute_dtype = "float16"
 bnb_4bit_quant_type = "nf4"
 use_nested_quant = False
 
-#output directory where the model predictions and checkpoints will be stored
 output_dir = "/app/results"
 
-#number of training epochs
 num_train_epochs = 10
-
-#enable fp16/bf16 training (set bf16 to True when using A100 GPU in google colab)
 fp16 = True
 bf16 = False
 
-#batch size per GPU for training
 per_device_train_batch_size = 2
-
-#batch size per GPU for evaluation
 per_device_eval_batch_size = 2
-
-#gradient accumulation steps - No of update steps
 gradient_accumulation_steps = 2
-
-#learning rate
 learning_rate = 2e-4
-
-#weight decay
 weight_decay = 0.001
-
-#Gradient clipping(max gradient Normal)
 max_grad_norm = 0.3
-
-#optimizer to use
 optim = "paged_adamw_32bit"
-
-#learning rate scheduler
 lr_scheduler_type = "cosine"
-
-#seed for reproducibility
 seed = 1
-
-#Number of training steps
 max_steps = -1
-
-#Ratio of steps for linear warmup
 warmup_ratio = 0.03
-
-#group sequnces into batches with same length
 group_by_length = True
-
-#save checkpoint every X updates steps
 save_steps = 0
-
-#Log at every X updates steps
 logging_steps = 50
-
-#maximum sequence length to use
 max_seq_length = 512
-
 packing = False
-
-#load the entire model on the GPU
 device_map = {"":0}
-
-#load dataset
 dataset = Dataset.load_from_disk(cache_dir)
 
-# Split into train, validation, and test datasets with 80%, 10%, 10% split
 train_test_split = dataset.train_test_split(test_size=0.2)
 test_valid_split = train_test_split["test"].train_test_split(test_size=0.5)
 
@@ -111,10 +80,6 @@ dataset = DatasetDict({
 
 print(dataset)
 
-# dataset["validation"] = dataset["test"]
-# del dataset["test"]
-
-#load tokenizer and model with QLoRA config
 compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
 
 bnb_config = BitsAndBytesConfig(
@@ -123,15 +88,7 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_compute_dtype = compute_dtype,
     bnb_4bit_use_double_quant = use_nested_quant,)
 
-#cheking GPU compatibility with bfloat16
-if compute_dtype == torch.float16 and use_4bit:
-    major, _ = torch.cuda.get_device_capability()
-    if major >= 8:
-        print("="*80)
-        print("Your GPU supports bfloat16, you are getting accelerate training with bf16= True")
-        print("="*80)
 
-#load base model
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
     quantization_config = bnb_config,
@@ -142,7 +99,6 @@ model = AutoModelForCausalLM.from_pretrained(
 model.config.use_cache = False
 model.config.pretraining_tp = 1
 
-#Load LLama tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_name,trust_remote_code = True)
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
@@ -157,18 +113,15 @@ def preprocess_function(examples):
         formatted_texts.append(formatted_text)
     return {"formatted_text": formatted_texts}
 
-# Apply preprocessing to the dataset
 formatted_dataset = dataset.map(preprocess_function, batched=True, num_proc=8)
 
 def tokenize_function(examples):
     return tokenizer(examples["formatted_text"], truncation=True, padding="max_length", max_length=2048)
 
-
 tokenized_dataset = formatted_dataset.map(tokenize_function, batched=True, num_proc=8)
 
 print(tokenized_dataset)
 
-#Load QLoRA config
 peft_config = LoraConfig(
     lora_alpha = lora_alpha,
     lora_dropout = lora_dropout,
@@ -176,8 +129,6 @@ peft_config = LoraConfig(
     bias = "none",
     task_type = "CAUSAL_LM",
 )
-
-#Set Training parameters
 training_arguments = TrainingArguments(
     output_dir = output_dir,
     num_train_epochs = num_train_epochs,
@@ -199,17 +150,13 @@ training_arguments = TrainingArguments(
 )
 print("Set Training Args")
 
-#SFT Trainer
 trainer = SFTTrainer(
     model = model,
     train_dataset = tokenized_dataset["train"],
     eval_dataset = tokenized_dataset["validation"],
     peft_config = peft_config,
-    # processing_class = "formatted_text",
-    # max_seq_length = max_seq_length,
     args = training_arguments,
     tokenizer = tokenizer,
-    # packing = packing,
 )
 print("Create SFTTrainer")
 
@@ -217,14 +164,10 @@ print("Starting Training")
 trainer.train()
 print("Training Ended")
 
-#save trained model
 trainer.model.save_pretrained(new_model)
 print("Saved pretrained model")
-
-# Ignore warnings
 logging.set_verbosity(logging.CRITICAL)
 
-# Run text generation pipeline with our next model
 instance_0 = tokenized_dataset["test"][0]
 prompt = create_mistral_prompt(sys_prompt, instance_0["short_description"])
 print(prompt)
@@ -246,7 +189,6 @@ base_model = AutoModelForCausalLM.from_pretrained(
 model = PeftModel.from_pretrained(base_model, new_model)
 model = model.merge_and_unload()
 
-# Reload tokenizer to save it
 tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
